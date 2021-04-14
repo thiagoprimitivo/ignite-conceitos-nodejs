@@ -7,7 +7,7 @@ const app = express();
 
 const users = [];
 
-function checkExistsUserAccount(request, response, next) {
+function checksExistsUserAccount(request, response, next) {
     const { username } = request.headers;
 
     const user = users.find((user) => user.username === username);
@@ -43,13 +43,13 @@ app.post('/users', (request, response) => {
     return response.status(201).send();
 });
 
-app.get('/todos', checkExistsUserAccount, (request, response) => {
+app.get('/todos', checksExistsUserAccount, (request, response) => {
     const { user } = request;
 
     return response.json(user.todos);
 });
 
-app.post('/todos', checkExistsUserAccount, (request, response) => {
+app.post('/todos', checksExistsUserAccount, (request, response) => {
     const { title, deadline } = request.body;
     const { user } = request;
 
@@ -66,8 +66,16 @@ app.post('/todos', checkExistsUserAccount, (request, response) => {
     return response.status(201).send();
 });
 
-app.put('/todos/:id', checkExistsUserAccount, (request, response) => {
+app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 
 });
 
-app.listen(3333);
+app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
+
+});
+  
+app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
+
+});
+  
+module.exports = app;
